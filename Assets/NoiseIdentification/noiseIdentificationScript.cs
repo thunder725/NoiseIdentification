@@ -195,7 +195,24 @@ public class noiseIdentificationScript : MonoBehaviour {
 
                 // This should never happen, but just in case I'll write this error.
                 default:
-                    Debug.LogFormat("[Noise Identification #{0}] Arrived to unknown Stage Number: {1}. Please report this to 'thunder725' on Discord.", moduleId, currentStageNumber);
+                    Debug.LogFormat("[Noise Identification #{0}] Arrived to unknown Stage Number: {1}. Please report this to 'thunder725' on Discord with the log. Solving module to prevent Soft-locks.", moduleId, currentStageNumber);
+
+                    // Act like a solve to prevent soft-locks due to errors.
+                    // Light up all stage LEDs
+                    StartCoroutine(TurnOnStageLight(stageOneLedRenderer));
+                    StartCoroutine(TurnOnStageLight(stageTwoLedRenderer));
+                    StartCoroutine(TurnOnStageLight(stageThreeLedRenderer));
+
+                    // Hide the screen because Souvenir might come into action later down the line.
+                    noisePlaneRenderer.transform.localScale = new Vector3(0.001f, 1f, 0.001f);
+                    noisePlaneRenderer.transform.localPosition = new Vector3(0f, 0.45f, 0f);
+
+                    moduleSolved = true;
+                    Debug.LogFormat("[Noise Identification #{0}] Module Solved.", moduleId);
+
+                    // Transmit solve to bomb
+                    module.HandlePass();
+
                     break;
             }
 
@@ -259,6 +276,8 @@ public class noiseIdentificationScript : MonoBehaviour {
         _lightToTurnOn.material = ledOnMaterial;
     }
 
+
+    // =-=-=-=-=-= TWITCH PLAYS =-=-=-=-=-=
 
 #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Press a button with “!{0} crystal” or “!{0} c”. Valid commands are “!{0} crystal”, “!{0} liquid”, “!{0} moisture”, “!{0} perlin”, “!{0} voronoi”, “!{0} white”, as well as their initials. ";
