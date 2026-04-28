@@ -46,10 +46,14 @@ public class noiseIdentificationScript : MonoBehaviour {
     private int currentStageNumber;
     private NoiseType currentStageType;
 
-    // Souvenir-Accessible data
+    // All Stages
     public NoiseType stageOneNoise;
     public NoiseType stageTwoNoise;
     public NoiseType stageThreeNoise;
+
+
+    // Souvenir Data
+    public string stageOneNoiseString;
 
 
 
@@ -88,7 +92,6 @@ public class noiseIdentificationScript : MonoBehaviour {
         Debug.LogFormat("[Noise Identification #{0}] Stage One (1) will be of type {1}.", moduleId, stageOneNoise.ToString());
         Debug.LogFormat("[Noise Identification #{0}] Stage Two (2) will be of type {1}.", moduleId, stageTwoNoise.ToString());
         Debug.LogFormat("[Noise Identification #{0}] Stage Three (3) will be of type {1}.", moduleId, stageThreeNoise.ToString());
-
     }
 
 
@@ -96,7 +99,7 @@ public class noiseIdentificationScript : MonoBehaviour {
     {
         // Stage One is completely random: an integer in range [0-5] for the 6 total types
         stageOneNoise = (NoiseType)Random.Range(0, 6);
-
+        stageOneNoiseString = stageOneNoise.ToString();
 
         // Stage Two shouldn't repeat what Stage One did
         stageTwoNoise = (NoiseType)Random.Range(0, 6);
